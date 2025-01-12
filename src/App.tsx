@@ -26,7 +26,7 @@ function App() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
-    const response = await fetch('http://localhost:3000/form/create', {
+    const response = await fetch('https://wise-land-form-api.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
