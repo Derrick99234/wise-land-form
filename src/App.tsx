@@ -22,10 +22,11 @@ function App() {
   })
 
   const [ successPopUp, setSuccessPopUp ] = useState(false)
+  const [ loading, setLoading ] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    
+    setLoading(true)
     const response = await fetch('https://wise-land-form-api.onrender.com', {
       method: 'POST',
       headers: {
@@ -42,6 +43,7 @@ function App() {
       pickUpPoint: '',
       comment: ''
     })
+    setLoading(false)
     setSuccessPopUp(true)
   }
 
@@ -99,7 +101,11 @@ function App() {
               value={form.comment}
               name="comment"
             />
-            <button className="w-full py-2 bg-slate-900 text-white">Submit</button>
+            <button className="w-full py-2 bg-slate-900 text-white">
+              {
+                loading ? 'Loading...' : 'Submit'
+              }
+            </button>
           </form>
         </div>
       </main>
