@@ -7,16 +7,33 @@ function App() {
   interface FormType {
     fullNames: string;
     phone: string;
-    pickupPoint: string;
-    comments: string
+    pickUpPoint: string;
+    email: string;
+    comment: string
   }
 
   const [ form, setForm ] = useState<FormType>({
     fullNames: '',
     phone: '',
-    pickupPoint: '',
-    comments: ''
+    email: '',
+    pickUpPoint: '',
+    comment: ''
   })
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    
+    const response = await fetch('http://localhost:3000/form/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(form)
+    })
+
+    const data = await response.json()
+    console.log(data)
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -30,7 +47,7 @@ function App() {
             src={busLogo}
             className="max-w-md w-full"
           />
-          <form className="max-w-md w-full bg-black/5 p-5 px-8 mx-4">
+          <form className="max-w-md w-full bg-black/5 p-5 px-8 mx-4" onSubmit={(e) => handleSubmit(e)}>
             <h2 className="text-2xl font-bold uppercase text-slate-900 mb-3">Ride to Work for Free - Your Morning, Made Easy!</h2>
             <FormInput 
               label="Full Names" 
@@ -39,6 +56,14 @@ function App() {
               type="text" 
               value={form.fullNames}
               name="fullNames"
+            />
+            <FormInput 
+              label="Email" 
+              onChange={(e) => handleChange(e)} 
+              placeholder="Enter your email address" 
+              type="email" 
+              value={form.email}
+              name="email"
             />
             <FormInput 
               label="Phone" 
@@ -53,16 +78,16 @@ function App() {
               onChange={(e) => handleChange(e)} 
               placeholder="Enter your closest pickup point" 
               type="select" 
-              value={form.pickupPoint}
-              name="pickupPoint"
+              value={form.pickUpPoint}
+              name="pickUpPoint"
             />
             <FormInput 
-              label="Comments" 
+              label="Comment" 
               onChange={(e) => handleChange(e)} 
-              placeholder="Enter your comments" 
+              placeholder="Enter your comment" 
               type="textarea" 
-              value={form.comments}
-              name="comments"
+              value={form.comment}
+              name="comment"
             />
             <button className="w-full py-2 bg-slate-900 text-white">Submit</button>
           </form>
