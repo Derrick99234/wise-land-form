@@ -1,6 +1,7 @@
 import { useState } from "react"
 import FormInput from "./components/Inputs/FormInput"
 import busLogo from './assets/bus.jpg'
+import RegisterationSuccessPopUp from "./components/PopUp/RegisterationSuccessPopUp";
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
     comment: ''
   })
 
+  const [ successPopUp, setSuccessPopUp ] = useState(false)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
@@ -31,8 +34,15 @@ function App() {
       body: JSON.stringify(form)
     })
 
-    const data = await response.json()
-    console.log(data)
+    await response.json()
+    setForm({
+      fullNames: '',
+      phone: '',
+      email: '',
+      pickUpPoint: '',
+      comment: ''
+    })
+    setSuccessPopUp(true)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -99,6 +109,11 @@ function App() {
           <a href="https://macwealthfreestore.com/list/71b6e174e5" className="text-slate-800 underline font-semibold">Marc Wealth</a>
         </p>
       </footer>
+      {
+        successPopUp && (
+          <RegisterationSuccessPopUp setSuccessPopUp={setSuccessPopUp} />
+        )
+      }
     </>
   )
 }
